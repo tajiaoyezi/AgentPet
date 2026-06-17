@@ -1,0 +1,35 @@
+---
+description: Git/PR 工作流 — 保护主分支、功能完成必须走 PR、合入前由子 agent 做对抗式审查循环
+alwaysApply: true
+---
+
+# Git / PR 工作流（强制）
+
+## 主分支保护
+- 禁止直接向主分支（默认 `master`）提交或推送代码。
+- 禁止 `git push origin master`，禁止对主分支 force-push。
+- 所有开发在功能分支进行；分支名建议与 OpenSpec change 一致，如 `m0-scaffold-tauri-skeleton`（或 `feat/...`、`fix/...`、`chore/...`）。
+
+## 完成功能 → 提 PR
+完成一项功能需求（通常 = 一个 OpenSpec change 的 tasks 全部完成并自验）后：
+- 推送功能分支：`git push -u origin <branch>`
+- 开 PR：`gh pr create --base master --head <branch> --title "..." --body "..."`，记下输出的 PR 号 `<pr>`（链接末尾数字），后续步骤复用。
+
+## 对抗式审查循环（合入前必须）
+1. 用 Task 工具启动审查子 agent（`bugbot` / `security-review`，或 `generalPurpose` 以红队心态审查 `git diff master...<branch>`），以 readonly 运行。
+2. 审查心态：默认假设代码有问题，主动找 bug、回归、边界条件、安全隐患、以及与 proposal/specs 不符之处。
+3. 判定：
+   - **存在问题** → 在同一分支修复并 `git push`，回到步骤 1 重审。
+   - **无阻断问题** → 进入下方“合入前置检查”。
+4. 循环至审查通过。
+
+## 合入前置检查（全部满足才能合并）
+- 审查结论写回 PR：`gh pr comment <pr> --body "REVIEW: APPROVE — ..."`，留下可追溯记录。
+- 分支与主分支对齐：`git fetch origin`；若 `git merge-base --is-ancestor origin/master HEAD` 不成立（落后于 master），则 `git rebase origin/master`（随后 `git push --force-with-lease`）或 `git merge origin/master`，解决冲突后重审。
+- 若仓库配置了 CI：`gh pr checks <pr>` 全绿才可合入（pending/queued 视为未通过，等待后重试）；无 CI 可跳过此条。
+- 合入：`gh pr merge <pr> --squash --delete-branch`。
+
+## 红线
+- 审查未通过不得合入。
+- 不得跳过对抗式审查直接合并。
+- 不得用直推主分支绕过 PR 流程。
