@@ -1,0 +1,22 @@
+schema: spec-driven
+
+# Project context (injected into AI prompts when creating artifacts)
+context: |
+  项目：AgentPet —— 跨 Agent 的本地注意力中心；统一 Claude Code / Codex 等 AI Agent 的
+  完成 / 等待输入 / 权限确认 / 错误 / 卡住等状态，并通过桌宠、声音、Toast、托盘、状态面板反馈。
+  技术栈：Tauri v2 + Rust + Vite + React + TypeScript + Canvas 2D；v0.1 Windows-first，v0.2 macOS。
+  权威需求来源（single source of truth）：docs/AgentPet_技术方案_v0.2.md。
+
+  change 命名约定：m<里程碑号>-<kebab-case>（OpenSpec 要求 change 名必须小写 kebab-case，
+  大写会被 openspec instructions 拒绝），与技术文档 §25 的里程碑 M0–M6 一一对应
+  （change 号 == 里程碑号），例：m0-scaffold-tauri-skeleton。
+  跨 change 的前向路线图与状态见 openspec/ROADMAP.md；新建 change 前先看 `openspec list`
+  与该路线图，并在建好后更新路线图的状态列。
+
+  文风：散文用中文；标识符 / 代码 / 文件名 / 命令用英文。
+
+# Per-artifact rules (optional)
+# 可按需为 proposal / specs / design / tasks 添加自定义规则，例如：
+#   rules:
+#     tasks:
+#       - 每个任务可在一次会话内完成
