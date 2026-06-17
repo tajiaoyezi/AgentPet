@@ -25,8 +25,8 @@ alwaysApply: true
 
 ## 合入前置检查（全部满足才能合并）
 - 审查结论写回 PR：`gh pr comment <pr> --body "REVIEW: APPROVE — ..."`，留下可追溯记录。
-- 分支与主分支对齐：`git fetch origin` 后 `git merge --ff-only origin/master`（落后则 rebase 或合并，有冲突解决后重审）。
-- 若仓库配置了 CI：`gh pr checks <pr>` 全绿（无 CI 可跳过此条）。
+- 分支与主分支对齐：`git fetch origin`；若 `git merge-base --is-ancestor origin/master HEAD` 不成立（落后于 master），则 `git rebase origin/master`（随后 `git push --force-with-lease`）或 `git merge origin/master`，解决冲突后重审。
+- 若仓库配置了 CI：`gh pr checks <pr>` 全绿才可合入（pending/queued 视为未通过，等待后重试）；无 CI 可跳过此条。
 - 合入：`gh pr merge <pr> --squash --delete-branch`。
 
 ## 红线
