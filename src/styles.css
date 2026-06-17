@@ -1,0 +1,58 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  background: transparent;
+}
+
+/* pet-overlay window: transparent + draggable */
+.overlay-root {
+  position: relative;
+  width: 192px;
+  height: 208px;
+  margin: 0 auto;
+  background: transparent;
+  user-select: none;
+  cursor: grab;
+}
+.overlay-root:active {
+  cursor: grabbing;
+}
+.overlay-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #fff;
+  font-size: 12px;
+}
+
+/* status-panel / settings: normal opaque pages */
+.page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 24px;
+  background: Canvas;
+  color: CanvasText;
+}
+.muted {
+  color: #8a8a8a;
+}
+.card {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #88888844;
+  border-radius: 12px;
+}
+button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #88888866;
+  cursor: pointer;
+}
