@@ -11,3 +11,7 @@ src-tauri/target/
 # OS
 .DS_Store
 Thumbs.db
+
+# Agent scratch (commit / PR message temp files)
+.commitmsg.txt
+.prbody.txt
